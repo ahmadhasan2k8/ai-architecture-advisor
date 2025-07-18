@@ -710,7 +710,7 @@ class SqliteUserRepository(UserRepository):
             conn = self._connection
         else:
             conn = sqlite3.connect(self.db_path)
-            
+
         conn.execute(
             """
             CREATE TABLE IF NOT EXISTS users (
@@ -722,7 +722,7 @@ class SqliteUserRepository(UserRepository):
         """
         )
         conn.commit()
-        
+
         # Only close if not in-memory
         if self.db_path != ":memory:":
             conn.close()
@@ -733,7 +733,7 @@ class SqliteUserRepository(UserRepository):
             return self._connection
         else:
             return sqlite3.connect(self.db_path)
-    
+
     def _close_connection(self, conn):
         """Close database connection if not persistent."""
         if not self._connection:

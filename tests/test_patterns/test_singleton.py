@@ -21,6 +21,7 @@ from src.patterns.singleton import (
 @singleton
 class SerializableService:
     """Test service for serialization testing."""
+
     def __init__(self):
         self.data = "test"
 
