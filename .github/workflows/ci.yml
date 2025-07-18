@@ -23,6 +23,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-dev.txt
     
+    - name: Ensure required directories exist
+      run: |
+        python .github/scripts/ensure_directories.py
+        # Also create them manually as backup
+        mkdir -p data docs
+    
     - name: Run validation script
       run: python validate.py
     
