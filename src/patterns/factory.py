@@ -153,7 +153,7 @@ class EmailNotifier(Notifier):
         smtp_server: str = "smtp.gmail.com",
         username: str = "app@company.com",
         password: str = "secret",
-        **kwargs
+        **kwargs,
     ):
         """Initialize email notifier.
 
@@ -204,7 +204,9 @@ class SMSNotifier(Notifier):
 class PushNotifier(Notifier):
     """Push notification service."""
 
-    def __init__(self, app_id: str = "com.company.app", service: str = "Firebase", **kwargs):
+    def __init__(
+        self, app_id: str = "com.company.app", service: str = "Firebase", **kwargs
+    ):
         """Initialize push notifier.
 
         Args:
@@ -430,7 +432,8 @@ class ShapeFactory:
         else:
             supported = ShapeFactory.get_supported_shapes()
             raise ValueError(
-                f"Unknown shape type: {shape_type}. " f"Supported types: {', '.join(supported)}"
+                f"Unknown shape type: {shape_type}. "
+                f"Supported types: {', '.join(supported)}"
             )
 
     @staticmethod
