@@ -501,7 +501,7 @@ class JsonFileUserRepository(UserRepository):
         self._ensure_file_exists()
         # Load initial data to populate attributes expected by tests
         data = self._load_data()
-        self._users = {user["id"]: self._user_from_dict(user) for user in data["users"]}
+        self._users = [self._user_from_dict(user) for user in data["users"]]
         self._next_id = data["next_id"]
 
     def _ensure_file_exists(self):
@@ -601,7 +601,14 @@ class JsonFileUserRepository(UserRepository):
 
         self._save_data(data)
         # Update in-memory attributes
-        self._users[user.id] = user
+        if user.id is None or user.id > len(self._users):
+            self._users.append(user)
+        else:
+            # Update existing user in the list
+            for i, u in enumerate(self._users):
+                if u.id == user.id:
+                    self._users[i] = user
+                    break
         return user
 
     def find_by_id(self, user_id: int) -> Optional[User]:
@@ -674,8 +681,7 @@ class JsonFileUserRepository(UserRepository):
                 del data["users"][i]
                 self._save_data(data)
                 # Update in-memory attributes
-                if user_id in self._users:
-                    del self._users[user_id]
+                self._users = [u for u in self._users if u.id != user_id]
                 return True
         return False
 
@@ -693,11 +699,18 @@ class SqliteUserRepository(UserRepository):
             db_path: Path to the SQLite database
         """
         self.db_path = db_path
+        self._connection = None
         self._init_db()
 
     def _init_db(self):
         """Initialize the database schema."""
-        conn = sqlite3.connect(self.db_path)
+        # For in-memory databases, we need to keep the connection open
+        if self.db_path == ":memory:":
+            self._connection = sqlite3.connect(self.db_path)
+            conn = self._connection
+        else:
+            conn = sqlite3.connect(self.db_path)
+            
         conn.execute(
             """
             CREATE TABLE IF NOT EXISTS users (
@@ -709,7 +722,22 @@ class SqliteUserRepository(UserRepository):
         """
         )
         conn.commit()
-        conn.close()
+        
+        # Only close if not in-memory
+        if self.db_path != ":memory:":
+            conn.close()
+
+    def _get_connection(self):
+        """Get database connection."""
+        if self._connection:
+            return self._connection
+        else:
+            return sqlite3.connect(self.db_path)
+    
+    def _close_connection(self, conn):
+        """Close database connection if not persistent."""
+        if not self._connection:
+            conn.close()
 
     def _user_from_row(self, row: tuple) -> User:
         """Create User from database row.
@@ -735,7 +763,7 @@ class SqliteUserRepository(UserRepository):
         Returns:
             Saved user with ID assigned
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = self._get_connection()
         cursor = conn.cursor()
 
         if user.id is None:
@@ -762,7 +790,7 @@ class SqliteUserRepository(UserRepository):
             )
 
         conn.commit()
-        conn.close()
+        self._close_connection(conn)
         return user
 
     def find_by_id(self, user_id: int) -> Optional[User]:
@@ -774,11 +802,11 @@ class SqliteUserRepository(UserRepository):
         Returns:
             User if found, None otherwise
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = self._get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
         row = cursor.fetchone()
-        conn.close()
+        self._close_connection(conn)
 
         if row:
             return self._user_from_row(row)
@@ -793,11 +821,11 @@ class SqliteUserRepository(UserRepository):
         Returns:
             User if found, None otherwise
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = self._get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
         row = cursor.fetchone()
-        conn.close()
+        self._close_connection(conn)
 
         if row:
             return self._user_from_row(row)
@@ -812,11 +840,11 @@ class SqliteUserRepository(UserRepository):
         Returns:
             List of users with matching name
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = self._get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM users WHERE name = ?", (name,))
         rows = cursor.fetchall()
-        conn.close()
+        self._close_connection(conn)
 
         return [self._user_from_row(row) for row in rows]
 
@@ -826,11 +854,11 @@ class SqliteUserRepository(UserRepository):
         Returns:
             List of all users
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = self._get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM users")
         rows = cursor.fetchall()
-        conn.close()
+        self._close_connection(conn)
 
         return [self._user_from_row(row) for row in rows]
 
@@ -843,12 +871,12 @@ class SqliteUserRepository(UserRepository):
         Returns:
             True if deleted, False if not found
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = self._get_connection()
         cursor = conn.cursor()
         cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
         deleted = cursor.rowcount > 0
         conn.commit()
-        conn.close()
+        self._close_connection(conn)
         return deleted
 
 

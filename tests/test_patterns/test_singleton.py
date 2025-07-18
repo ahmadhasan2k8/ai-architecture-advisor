@@ -18,6 +18,13 @@ from src.patterns.singleton import (
 )
 
 
+@singleton
+class SerializableService:
+    """Test service for serialization testing."""
+    def __init__(self):
+        self.data = "test"
+
+
 class TestSingletonMeta:
     """Test the SingletonMeta metaclass implementation."""
 
@@ -267,11 +274,6 @@ class TestSingletonEdgeCases:
     def test_singleton_serialization(self):
         """Test singleton behavior with serialization."""
         import pickle
-
-        @singleton
-        class SerializableService:
-            def __init__(self):
-                self.data = "test"
 
         service1 = SerializableService()
         service1.data = "modified"
