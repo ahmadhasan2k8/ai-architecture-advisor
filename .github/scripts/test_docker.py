@@ -5,8 +5,11 @@ import sys
 sys.path.append('/home/jupyter/work/src')
 
 try:
-    from patterns import Singleton, ComputerBuilder
-    print('✅ Docker image working correctly')
+    from patterns.singleton import singleton
+    from patterns.factory import ShapeFactory
+    from patterns.repository import User, SqliteUserRepository
+    from patterns.observer import WeatherStation
+    print('✅ Docker image working correctly - all pattern imports successful')
     sys.exit(0)
 except ImportError as e:
     print(f'❌ Import error: {e}')
