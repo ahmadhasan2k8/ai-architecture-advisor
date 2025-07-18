@@ -4,9 +4,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Jupyter](https://img.shields.io/badge/Jupyter-Lab-F37626.svg?style=flat&logo=Jupyter)](https://jupyterlab.readthedocs.io/en/stable/)
-[![CI/CD](https://github.com/yourusername/design-patterns-tutorial/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/yourusername/design-patterns-tutorial/actions)
+[![CI/CD](https://github.com/ahmadhasan2k8/design-patterns-tutorial/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/ahmadhasan2k8/design-patterns-tutorial/actions)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
-[![Tests](https://img.shields.io/badge/Tests-Passing-green.svg)](https://github.com/yourusername/design-patterns-tutorial/actions)
+[![Tests](https://img.shields.io/badge/Tests-Passing-green.svg)](https://github.com/ahmadhasan2k8/design-patterns-tutorial/actions)
 
 A comprehensive, interactive tutorial on design patterns using Python. This repository contains Jupyter notebooks that explain 10 essential design patterns with real-world examples and production-ready implementations.
 
@@ -72,7 +72,7 @@ Design patterns are proven solutions to common programming problems. This tutori
 
 ```bash
 # Clone and start in one command
-git clone https://github.com/yourusername/design-patterns-tutorial.git
+git clone https://github.com/ahmadhasan2k8/design-patterns-tutorial.git
 cd design-patterns-tutorial
 docker compose up --build
 
@@ -83,7 +83,7 @@ docker compose up --build
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/design-patterns-tutorial.git
+git clone https://github.com/ahmadhasan2k8/design-patterns-tutorial.git
 cd design-patterns-tutorial
 
 # Install and run
@@ -99,7 +99,7 @@ The easiest way to get started is using Docker:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/design-patterns-tutorial.git
+git clone https://github.com/ahmadhasan2k8/design-patterns-tutorial.git
 cd design-patterns-tutorial
 
 # Build and run with Docker Compose
@@ -130,7 +130,7 @@ If you prefer to install locally:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/design-patterns-tutorial.git
+git clone https://github.com/ahmadhasan2k8/design-patterns-tutorial.git
 cd design-patterns-tutorial
 
 # Create a virtual environment
@@ -158,7 +158,7 @@ If you use Poetry for dependency management:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/design-patterns-tutorial.git
+git clone https://github.com/ahmadhasan2k8/design-patterns-tutorial.git
 cd design-patterns-tutorial
 
 # Install dependencies
