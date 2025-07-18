@@ -168,28 +168,65 @@ print('SQLite repository works')
         else:
             print("✅ SQLite repository works")
         
-        # Test JsonFile repository
+        # Test JsonFile repository with existing file (the failing test case)
         result = run_command("""python3 -c "
 import sys, tempfile, os, json
 sys.path.append('src')
 from patterns.repository import JsonFileUserRepository
 with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.json') as f:
-    json.dump({'users': [], 'next_id': 1}, f)
+    test_data = {
+        'users': [
+            {
+                'id': 1,
+                'name': 'Alice',
+                'email': 'alice@example.com',
+                'created_at': '2023-01-01T12:00:00',
+            }
+        ],
+        'next_id': 2,
+    }
+    json.dump(test_data, f)
     temp_path = f.name
 try:
     repo = JsonFileUserRepository(temp_path)
-    assert len(repo._users) == 0
-    print('JsonFile repository works')
+    assert len(repo._users) == 1
+    assert repo._next_id == 2
+    assert repo._users[0].name == 'Alice'
+    print('JsonFile repository existing file test works')
 finally:
     os.unlink(temp_path)
 " """, check=False)
         
         if result.returncode != 0:
-            print("❌ JsonFile repository test failed")
+            print("❌ JsonFile repository existing file test failed")
             print(result.stderr)
             return False
         else:
-            print("✅ JsonFile repository works")
+            print("✅ JsonFile repository existing file test works")
+        
+        # Test corrupted file handling
+        result = run_command("""python3 -c "
+import sys, tempfile, os
+sys.path.append('src')
+from patterns.repository import JsonFileUserRepository
+with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.json') as f:
+    f.write('invalid json content')
+    temp_path = f.name
+try:
+    repo = JsonFileUserRepository(temp_path)
+    assert len(repo._users) == 0
+    assert repo._next_id == 1
+    print('Corrupted file handling works')
+finally:
+    os.unlink(temp_path)
+" """, check=False)
+        
+        if result.returncode != 0:
+            print("❌ Corrupted file handling test failed")
+            print(result.stderr)
+            return False
+        else:
+            print("✅ Corrupted file handling works")
         
         return True
         
