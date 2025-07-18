@@ -528,8 +528,12 @@ class JsonFileUserRepository(UserRepository):
         Returns:
             Data dictionary
         """
-        with open(self.file_path, "r") as f:
-            return json.load(f)
+        try:
+            with open(self.file_path, "r") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            # If file is corrupted or unreadable, return default structure
+            return {"users": [], "next_id": 1}
 
     def _save_data(self, data: Dict[str, Any]):
         """Save data to JSON file.
