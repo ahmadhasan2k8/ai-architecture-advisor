@@ -1,4 +1,4 @@
-version: '3.8'
+# Docker Compose configuration for Design Patterns Tutorial
 
 services:
   jupyter:
@@ -26,10 +26,10 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: design-patterns-tests
-    command: pytest -v --cov=src tests/
+    command: python simple_test_runner.py
     volumes:
       - ./src:/home/jupyter/work/src
-      - ./tests:/home/jupyter/work/tests
+      - ./simple_test_runner.py:/home/jupyter/work/simple_test_runner.py
     profiles:
       - test
     networks:
