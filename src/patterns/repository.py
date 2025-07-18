@@ -509,6 +509,18 @@ class JsonFileUserRepository(UserRepository):
         if not os.path.exists(self.file_path):
             with open(self.file_path, "w") as f:
                 json.dump({"users": [], "next_id": 1}, f)
+        else:
+            # Check if file is empty and initialize if needed
+            try:
+                with open(self.file_path, "r") as f:
+                    content = f.read().strip()
+                    if not content:
+                        with open(self.file_path, "w") as f:
+                            json.dump({"users": [], "next_id": 1}, f)
+            except (json.JSONDecodeError, IOError):
+                # File is corrupted or empty, reinitialize
+                with open(self.file_path, "w") as f:
+                    json.dump({"users": [], "next_id": 1}, f)
 
     def _load_data(self) -> Dict[str, Any]:
         """Load data from JSON file.

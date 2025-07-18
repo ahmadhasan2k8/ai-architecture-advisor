@@ -153,6 +153,7 @@ class EmailNotifier(Notifier):
         smtp_server: str = "smtp.gmail.com",
         username: str = "app@company.com",
         password: str = "secret",
+        **kwargs
     ):
         """Initialize email notifier.
 
@@ -179,7 +180,7 @@ class EmailNotifier(Notifier):
 class SMSNotifier(Notifier):
     """SMS notification service."""
 
-    def __init__(self, api_key: str = "default_key", service: str = "Twilio"):
+    def __init__(self, api_key: str = "default_key", service: str = "Twilio", **kwargs):
         """Initialize SMS notifier.
 
         Args:
@@ -203,7 +204,7 @@ class SMSNotifier(Notifier):
 class PushNotifier(Notifier):
     """Push notification service."""
 
-    def __init__(self, app_id: str = "com.company.app", service: str = "Firebase"):
+    def __init__(self, app_id: str = "com.company.app", service: str = "Firebase", **kwargs):
         """Initialize push notifier.
 
         Args:
@@ -253,7 +254,7 @@ class NotificationFactory:
             supported = NotificationFactory.get_supported_types()
             raise ValueError(
                 f"Unknown notification type: {notification_type}. "
-                f"Supported types: {supported}"
+                f"Supported types: {', '.join(supported)}"
             )
 
     @staticmethod
@@ -429,7 +430,7 @@ class ShapeFactory:
         else:
             supported = ShapeFactory.get_supported_shapes()
             raise ValueError(
-                f"Unknown shape type: {shape_type}. " f"Supported types: {supported}"
+                f"Unknown shape type: {shape_type}. " f"Supported types: {', '.join(supported)}"
             )
 
     @staticmethod
@@ -606,7 +607,7 @@ class UIComponentFactory:
         else:
             raise ValueError(
                 f"Unknown platform: {platform}. "
-                f"Supported platforms: {UIComponentFactory.get_supported_platforms()}"
+                f"Supported platforms: {', '.join(UIComponentFactory.get_supported_platforms())}"
             )
 
     @staticmethod

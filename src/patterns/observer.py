@@ -88,7 +88,8 @@ class ConcreteSubject(Subject):
 
     def notify_observers(self) -> None:
         """Notify all registered observers of a change."""
-        for observer in self._observers:
+        # Create a copy to avoid issues if observers modify the set during iteration
+        for observer in list(self._observers):
             observer.update(self._state)
 
     def set_state(self, state: Any) -> None:
@@ -181,7 +182,7 @@ class WeatherStation(Subject):
 
     def notify_observers(self) -> None:
         """Notify all observers of weather changes."""
-        for observer in self._observers:
+        for observer in list(self._observers):
             observer.update(self._temperature, self._humidity, self._pressure)
 
     def set_measurements(
@@ -284,7 +285,7 @@ class ForecastDisplay(WeatherObserver):
 
     def __init__(self):
         """Initialize the forecast display."""
-        self._last_pressure: float = 0.0
+        self._last_pressure: Optional[float] = None
 
     def update(self, temperature: float, humidity: float, pressure: float) -> None:
         """Update the forecast based on pressure changes.
@@ -294,7 +295,9 @@ class ForecastDisplay(WeatherObserver):
             humidity: Humidity percentage
             pressure: Atmospheric pressure in hPa
         """
-        if pressure > self._last_pressure:
+        if self._last_pressure is None:
+            forecast = "More of the same"
+        elif pressure > self._last_pressure:
             forecast = "Improving weather on the way!"
         elif pressure < self._last_pressure:
             forecast = "Watch out for cooler, rainy weather"
@@ -353,7 +356,7 @@ class Stock(Subject):
 
     def notify_observers(self) -> None:
         """Notify all observers of stock changes."""
-        for observer in self._observers:
+        for observer in list(self._observers):
             observer.update(self)
 
     def set_price(self, price: float) -> None:
