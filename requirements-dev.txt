@@ -17,4 +17,3 @@ radon>=6.0.0
 
 # Type stubs
 types-requests
-pandas-stubs
