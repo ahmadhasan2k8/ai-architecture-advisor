@@ -100,18 +100,7 @@ jobs:
     - name: Check notebook outputs are cleared
       run: |
         # Check that notebook outputs are cleared (for clean git commits)
-        for notebook in notebooks/*.ipynb; do
-          python -c "
-import json, sys
-with open('$notebook', 'r') as f:
-    nb = json.load(f)
-for cell in nb['cells']:
-    if cell['cell_type'] == 'code' and cell.get('outputs', []):
-        print(f'ERROR: $notebook has output that should be cleared')
-        sys.exit(1)
-print(f'OK: $notebook')
-"
-        done
+        python .github/scripts/check_notebooks.py
 
   docker-build:
     runs-on: ubuntu-latest
@@ -130,12 +119,7 @@ print(f'OK: $notebook')
     - name: Test Docker image
       run: |
         # Test that the Docker image can run basic imports
-        docker run --rm design-patterns-tutorial:latest python -c "
-import sys
-sys.path.append('/home/jupyter/work/src')
-from patterns import Singleton, ComputerBuilder
-print('✅ Docker image working correctly')
-        "
+        docker run --rm -v ${{ github.workspace }}/.github/scripts:/scripts design-patterns-tutorial:latest python /scripts/test_docker.py
     
     - name: Test Docker Compose
       run: |
