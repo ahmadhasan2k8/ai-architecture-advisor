@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: design-patterns-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jupyter/work/notebooks
+      - ./src:/home/jupyter/work/src
+      - ./tests:/home/jupyter/work/tests
+      - ./data:/home/jupyter/work/data
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=design-patterns-2025
+    restart: unless-stopped
+    networks:
+      - design-patterns-net
+
+  # Optional: Add a service for running tests
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: design-patterns-tests
+    command: pytest -v --cov=src tests/
+    volumes:
+      - ./src:/home/jupyter/work/src
+      - ./tests:/home/jupyter/work/tests
+    profiles:
+      - test
+    networks:
+      - design-patterns-net
+
+networks:
+  design-patterns-net:
+    driver: bridge
+
+volumes:
+  jupyter-data:
