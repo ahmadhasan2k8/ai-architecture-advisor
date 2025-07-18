@@ -100,16 +100,18 @@ jobs:
     - name: Check notebook outputs are cleared
       run: |
         # Check that notebook outputs are cleared (for clean git commits)
-        find notebooks/ -name "*.ipynb" -exec python -c "
+        for notebook in notebooks/*.ipynb; do
+          python -c "
 import json, sys
-with open(sys.argv[1], 'r') as f:
+with open('$notebook', 'r') as f:
     nb = json.load(f)
 for cell in nb['cells']:
     if cell['cell_type'] == 'code' and cell.get('outputs', []):
-        print(f'ERROR: {sys.argv[1]} has output that should be cleared')
+        print(f'ERROR: $notebook has output that should be cleared')
         sys.exit(1)
-print(f'OK: {sys.argv[1]}')
-" {} \;
+print(f'OK: $notebook')
+"
+        done
 
   docker-build:
     runs-on: ubuntu-latest
