@@ -1,42 +1,46 @@
-# Docker Compose configuration for Design Patterns Tutorial
+# Docker Compose configuration for AI Architecture Advisor
 
 services:
   jupyter:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: design-patterns-jupyter
+    container_name: ai-architecture-advisor-jupyter
     ports:
       - "8888:8888"
     volumes:
-      - ./notebooks:/home/jupyter/work/notebooks
-      - ./src:/home/jupyter/work/src
-      - ./tests:/home/jupyter/work/tests
+      - ./learning-resources/notebooks:/home/jupyter/work/notebooks
+      - ./learning-resources/examples/implementations:/home/jupyter/work/implementations
+      - ./learning-resources/examples/tests:/home/jupyter/work/tests
+      - ./ai-engine:/home/jupyter/work/ai-engine
+      - ./commands:/home/jupyter/work/commands
       - ./data:/home/jupyter/work/data
     environment:
       - JUPYTER_ENABLE_LAB=yes
-      - JUPYTER_TOKEN=design-patterns-2025
+      - JUPYTER_TOKEN=ai-advisor-2025
     restart: unless-stopped
     networks:
-      - design-patterns-net
+      - ai-advisor-net
 
   # Optional: Add a service for running tests
   test-runner:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: design-patterns-tests
+    container_name: ai-architecture-advisor-tests
     command: python simple_test_runner.py
     volumes:
-      - ./src:/home/jupyter/work/src
+      - ./learning-resources/examples/implementations:/home/jupyter/work/implementations
+      - ./learning-resources/examples/tests:/home/jupyter/work/tests
+      - ./ai-engine:/home/jupyter/work/ai-engine
       - ./simple_test_runner.py:/home/jupyter/work/simple_test_runner.py
     profiles:
       - test
     networks:
-      - design-patterns-net
+      - ai-advisor-net
 
 networks:
-  design-patterns-net:
+  ai-advisor-net:
     driver: bridge
 
 volumes:

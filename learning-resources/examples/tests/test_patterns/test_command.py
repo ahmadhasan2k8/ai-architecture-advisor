@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from src.patterns.command import (  # Basic Command Pattern; Receiver Classes; Concrete Command Classes; Invoker Classes; Command Queue and History; Text Editor Example
+from implementations.patterns.command import (  # Basic Command Pattern; Receiver Classes; Concrete Command Classes; Invoker Classes; Command Queue and History; Text Editor Example
     Command,
     CommandHistory,
     CommandHistoryEntry,

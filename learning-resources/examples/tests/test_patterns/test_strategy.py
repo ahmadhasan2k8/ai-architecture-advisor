@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from src.patterns.strategy import (  # Basic Strategy Pattern; Payment Processing; Sorting Algorithms; Discount Calculation
+from implementations.patterns.strategy import (  # Basic Strategy Pattern; Payment Processing; Sorting Algorithms; Discount Calculation
     BubbleSort,
     BuyOneGetOneDiscount,
     Context,

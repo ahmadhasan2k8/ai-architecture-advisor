@@ -7,7 +7,7 @@ from typing import List
 
 import pytest
 
-from src.patterns.singleton import (
+from implementations.patterns.singleton import (
     ConfigurationManager,
     Logger,
     ResettableSingleton,

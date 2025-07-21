@@ -5,7 +5,7 @@ from unittest.mock import Mock, call, patch
 
 import pytest
 
-from src.patterns.adapter import (  # Target Interface; Adaptee Classes; Adapter Classes; Database Adapter Example; Payment Gateway Adapter Example; Object Adapter vs Class Adapter; Service Layer
+from implementations.patterns.adapter import (  # Target Interface; Adaptee Classes; Adapter Classes; Database Adapter Example; Payment Gateway Adapter Example; Object Adapter vs Class Adapter; Service Layer
     AudioPlayer,
     DatabaseConnection,
     LegacyRectangle,

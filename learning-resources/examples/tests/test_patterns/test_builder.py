@@ -4,7 +4,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from src.patterns.builder import (  # Product Classes; Builder Classes; Director Classes
+from implementations.patterns.builder import (  # Product Classes; Builder Classes; Director Classes
     Builder,
     Computer,
     ComputerBuilder,

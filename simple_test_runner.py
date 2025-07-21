@@ -10,8 +10,8 @@ import tempfile
 import json
 from pathlib import Path
 
-# Add src to path
-sys.path.insert(0, 'src')
+# Add implementations to path
+sys.path.insert(0, 'learning-resources/examples/implementations')
 
 def test_singleton_basic():
     """Test singleton pattern basic functionality."""

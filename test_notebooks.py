@@ -13,7 +13,7 @@ def test_notebook_execution():
     """Test if notebooks can be executed properly."""
     print("🔍 Testing notebook execution...")
     
-    notebooks_dir = Path("notebooks")
+    notebooks_dir = Path("learning-resources/notebooks")
     notebooks = sorted([f for f in notebooks_dir.glob("*.ipynb") if ".ipynb_checkpoints" not in str(f)])
     
     print(f"Found {len(notebooks)} notebooks to test")
@@ -83,7 +83,7 @@ def clear_notebook_outputs():
     """Clear outputs from notebooks if they exist."""
     print("\n🔍 Clearing notebook outputs...")
     
-    notebooks_dir = Path("notebooks")
+    notebooks_dir = Path("learning-resources/notebooks")
     notebooks = sorted([f for f in notebooks_dir.glob("*.ipynb") if ".ipynb_checkpoints" not in str(f)])
     
     cleared_count = 0

@@ -32,7 +32,7 @@ def reset_singletons():
     yield
 
     # Reset any resettable singletons
-    from src.patterns.singleton import ResettableSingleton
+    from implementations.patterns.singleton import ResettableSingleton
 
     # Get all subclasses of ResettableSingleton
     for subclass in ResettableSingleton.__subclasses__():

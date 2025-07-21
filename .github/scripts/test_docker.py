@@ -2,7 +2,7 @@
 """Test Docker image imports."""
 
 import sys
-sys.path.append('/home/jupyter/work/src')
+sys.path.append('/home/jupyter/work/implementations')
 
 try:
     from patterns.singleton import singleton

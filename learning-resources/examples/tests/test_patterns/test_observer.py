@@ -6,7 +6,7 @@ from unittest.mock import Mock, call
 
 import pytest
 
-from src.patterns.observer import (  # Basic Observer Pattern; Weather Station Example; Stock Market Example; Event System
+from implementations.patterns.observer import (  # Basic Observer Pattern; Weather Station Example; Stock Market Example; Event System
     AuditService,
     ConcreteObserver,
     ConcreteSubject,

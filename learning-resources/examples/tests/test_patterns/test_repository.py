@@ -9,7 +9,7 @@ from unittest.mock import Mock, call, patch
 
 import pytest
 
-from src.patterns.repository import (  # Domain Models; Repository Interfaces; Concrete Implementations; Services; Unit of Work
+from implementations.patterns.repository import (  # Domain Models; Repository Interfaces; Concrete Implementations; Services; Unit of Work
     InMemoryOrderRepository,
     InMemoryProductRepository,
     InMemoryUserRepository,

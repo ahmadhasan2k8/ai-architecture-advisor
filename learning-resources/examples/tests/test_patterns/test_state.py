@@ -7,7 +7,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from src.patterns.state import (  # Abstract classes; Vending Machine implementations; Traffic Light implementations; Media Player implementations; Order Processing implementations; Demo functions
+from implementations.patterns.state import (  # Abstract classes; Vending Machine implementations; Traffic Light implementations; Media Player implementations; Order Processing implementations; Demo functions
     CancelledState,
     CoinInsertedState,
     Context,
