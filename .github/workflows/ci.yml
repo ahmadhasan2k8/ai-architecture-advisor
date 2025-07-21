@@ -127,7 +127,10 @@ jobs:
     - name: Test Docker image
       run: |
         # Test that the Docker image can run basic imports
-        docker run --rm -v ${{ github.workspace }}/.github/scripts:/scripts ai-architecture-advisor:latest python /scripts/test_docker.py
+        docker run --rm \
+          -v ${{ github.workspace }}/.github/scripts:/scripts \
+          -v ${{ github.workspace }}/learning-resources/examples/implementations:/home/jupyter/work/implementations \
+          ai-architecture-advisor:latest python /scripts/test_docker.py
     
     - name: Test Docker Compose
       run: |
