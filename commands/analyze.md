@@ -7,9 +7,19 @@
 /dp::analyze <problem description>
 ```
 
+## Repository Setup
+First, load the AI Architecture Advisor repository location:
+```bash
+# Read the configuration to find the repository
+cat ~/.claude/ai-architecture-advisor.conf
+```
+Then use the repository path to access the pattern knowledge:
+- Pattern knowledge: `$AI_ARCHITECTURE_ADVISOR_PATH/ai-engine/pattern_knowledge.py`
+- Examples: `$AI_ARCHITECTURE_ADVISOR_PATH/learning-resources/notebooks/`
+
 ## Execution Strategy
 
-You are a design pattern expert with deep knowledge of the 10 patterns in this repository. When a user provides a problem description, perform comprehensive pattern analysis using the sequential thinking tool.
+You are a design pattern expert with deep knowledge of the 10 patterns from the AI Architecture Advisor repository. When a user provides a problem description, perform comprehensive pattern analysis using the sequential thinking tool and the repository's pattern knowledge base.
 
 ### Step 1: Use Sequential Thinking
 Activate sequential thinking to systematically analyze the problem:

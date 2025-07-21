@@ -22,17 +22,22 @@ The AI Architecture Advisor analyzes your codebase and provides expert recommend
 **Prerequisites**: [Claude Code CLI](https://claude.ai/code) installed
 
 ```bash
-# 1. Clone and navigate
+# 1. Clone and setup
 git clone https://github.com/ahmadhasan2k8/ai-architecture-advisor.git
 cd ai-architecture-advisor
+./setup.sh  # Installs commands globally
 
-# 2. Start getting AI recommendations immediately
+# 2. Use from ANY directory - no need to stay in ai-architecture-advisor!
+cd /path/to/your/project
+claude .
+
+# 3. Start getting AI recommendations
 /dp::analyze Your architectural challenge description here
 
-# 3. Analyze existing code  
-/dp::refactor /path/to/your/project/main.py
+# 4. Analyze your existing code  
+/dp::refactor main.py
 
-# 4. Validate pattern decisions
+# 5. Validate pattern decisions
 /dp::check singleton for database connection pool
 ```
 

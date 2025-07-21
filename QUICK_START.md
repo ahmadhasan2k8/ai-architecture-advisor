@@ -13,12 +13,13 @@ The AI Architecture Advisor analyzes your code and provides expert recommendatio
 ## Prerequisites (One-Time Setup)
 
 1. **Install Claude Code** ([Get it here](https://claude.ai/code))
-2. **Clone this repository**:
+2. **Clone and setup this repository**:
    ```bash
    git clone https://github.com/ahmadhasan2k8/ai-architecture-advisor.git
    cd ai-architecture-advisor
+   ./setup.sh  # This installs the dp:: commands globally
    ```
-3. **Navigate to this directory in Claude Code**
+3. **That's it!** You can now use dp:: commands from ANY directory
 
 ## 4 AI Commands - Your New Architecture Toolkit
 
@@ -112,10 +113,14 @@ The AI Architecture Advisor analyzes your code and provides expert recommendatio
 
 ## Your First 5 Minutes
 
-1. **Open Claude Code** and navigate to this repository
+1. **Open Claude Code** from any project directory:
+   ```bash
+   cd /path/to/your/project
+   claude .
+   ```
 2. **Try the analyzer** on your current project:
    ```bash
-   /dp::refactor /path/to/your/main/source/file.py
+   /dp::refactor main.py  # Or any file in your project
    ```
 3. **Get architectural advice** for a challenge you're facing:
    ```bash
@@ -147,7 +152,8 @@ After getting AI recommendations, dive deeper with our comprehensive learning re
 
 ## Troubleshooting
 
-**"Commands not working"**: Make sure you're in the repository directory in Claude Code  
+**"Commands not working"**: Run `./setup.sh` from the ai-architecture-advisor directory  
+**"Command not found"**: Make sure you ran setup.sh and restart Claude Code  
 **"No sequential thinking"**: Update Claude Code to latest version  
 **"Want to analyze private code"**: The AI only reads what you specify - your code stays secure
 
