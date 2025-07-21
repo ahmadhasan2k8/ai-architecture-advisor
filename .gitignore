@@ -160,3 +160,6 @@ notebooks/scratch/
 # Docker
 .dockerignore
 docker-compose.override.yml
+
+# Claude Code - local setup directory
+.claude/

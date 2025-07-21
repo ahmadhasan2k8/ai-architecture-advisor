@@ -192,19 +192,35 @@ The AI uses advanced sequential thinking to:
 ## 🚀 Installation & Setup
 
 ### Prerequisites
-- Python 3.11+
-- [Claude Code CLI](https://claude.ai/code)
+- Python 3.11+ (optional, for notebooks)
+- [Claude Code CLI](https://claude.ai/code) (required for dp:: commands)
 
-### Setup
+### Quick Setup (2 minutes)
 ```bash
+# Clone the repository
 git clone https://github.com/ahmadhasan2k8/ai-architecture-advisor.git
 cd ai-architecture-advisor
 
-# Optional: Set up learning environment
-pip install -r learning-resources/requirements.txt
+# Run the setup script to enable dp:: commands
+./setup.sh
+
+# Or manually copy commands
+mkdir -p .claude/commands
+cp commands/*.md .claude/commands/
 ```
 
-**That's it!** The AI commands work immediately through Claude Code.
+### Verify Installation
+```bash
+# Open Claude Code
+claude .
+
+# Test a command
+/dp::analyze I need a payment processing system
+```
+
+**That's it!** The dp:: commands are now available in Claude Code.
+
+**→ [Detailed Setup Guide](SETUP.md)** for troubleshooting and manual setup.
 
 ## 📊 Capabilities
 
