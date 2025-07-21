@@ -6,7 +6,7 @@ import sys
 import glob
 
 has_outputs = False
-for notebook_path in glob.glob('notebooks/*.ipynb'):
+for notebook_path in glob.glob('learning-resources/notebooks/*.ipynb'):
     with open(notebook_path, 'r') as f:
         nb = json.load(f)
     
