@@ -109,9 +109,9 @@ Format your final response as:
 [Any warnings about overengineering or misuse]
 
 ## Repository References
-- **Notebook**: `learning-resources/notebooks/[XX]_[pattern]_pattern.ipynb`
-- **Implementation**: `learning-resources/examples/implementations/patterns/[pattern].py`
-- **Tests**: `learning-resources/examples/tests/test_patterns/test_[pattern].py`
+- **Notebook**: `notebooks/[XX]_[pattern]_pattern.ipynb`
+- **Implementation**: `src/patterns/[pattern].py`
+- **Tests**: `tests/test_patterns/test_[pattern].py`
 
 ## Next Steps
 1. [Immediate implementation guidance]
@@ -170,8 +170,8 @@ Auto-activate deeper analysis when detecting:
 ✅ No overengineering detected - complexity justifies pattern usage
 
 ## Repository References
-- **Notebook**: `learning-resources/notebooks/04_strategy_pattern.ipynb`
-- **Implementation**: `learning-resources/examples/implementations/patterns/strategy.py`
+- **Notebook**: `notebooks/04_strategy_pattern.ipynb`
+- **Implementation**: `src/patterns/strategy.py`
 
 ## Next Steps
 1. Define ReportGenerator interface

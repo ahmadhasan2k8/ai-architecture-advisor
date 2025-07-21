@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from src.patterns.decorator import (  # Basic Decorator Pattern; Beverage Example; Text Processing; Function Decorators; Class-based Decorator
+from implementations.patterns.decorator import (  # Basic Decorator Pattern; Beverage Example; Text Processing; Function Decorators; Class-based Decorator
     Beverage,
     CensorDecorator,
     Cinnamon,

@@ -12,15 +12,15 @@ import importlib.util
 from pathlib import Path
 from typing import Dict, List, Tuple, Any
 
-# Add src to path for imports
-sys.path.insert(0, str(Path(__file__).parent / "src"))
+# Add learning-resources path for imports
+sys.path.insert(0, str(Path(__file__).parent / "learning-resources" / "examples" / "implementations"))
 
 def validate_notebooks() -> Tuple[bool, List[str]]:
     """Validate all Jupyter notebooks."""
     print("🔍 Validating Jupyter notebooks...")
     
     errors = []
-    notebooks_dir = Path("notebooks")
+    notebooks_dir = Path("learning-resources/notebooks")
     
     if not notebooks_dir.exists():
         errors.append("notebooks directory does not exist")
@@ -89,11 +89,11 @@ def validate_source_code() -> Tuple[bool, List[str]]:
     print("🔍 Validating source code implementations...")
     
     errors = []
-    src_dir = Path("src")
+    src_dir = Path("learning-resources/examples/implementations")
     patterns_dir = src_dir / "patterns"
     
     if not patterns_dir.exists():
-        errors.append("src/patterns directory does not exist")
+        errors.append("learning-resources/examples/implementations/patterns directory does not exist")
         return False, errors
     
     expected_patterns = [
@@ -168,10 +168,10 @@ def validate_tests() -> Tuple[bool, List[str]]:
     print("🔍 Validating test files...")
     
     errors = []
-    tests_dir = Path("tests") / "test_patterns"
+    tests_dir = Path("learning-resources/examples/tests") / "test_patterns"
     
     if not tests_dir.exists():
-        errors.append("tests/test_patterns directory does not exist")
+        errors.append("learning-resources/examples/tests/test_patterns directory does not exist")
         return False, errors
     
     expected_tests = [
@@ -252,12 +252,14 @@ def validate_project_structure() -> Tuple[bool, List[str]]:
     errors = []
     
     expected_dirs = [
-        "src",
-        "src/patterns", 
-        "tests",
-        "tests/test_patterns",
-        "notebooks",
-        "docs",
+        "learning-resources/examples/implementations",
+        "learning-resources/examples/implementations/patterns", 
+        "learning-resources/examples/tests",
+        "learning-resources/examples/tests/test_patterns",
+        "learning-resources/notebooks",
+        "learning-resources/guides",
+        "ai-engine",
+        "commands",
         "data"
     ]
     
@@ -273,10 +275,11 @@ def validate_project_structure() -> Tuple[bool, List[str]]:
         "Dockerfile",
         "docker-compose.yml",
         "CLAUDE.md",
-        "src/__init__.py",
-        "src/patterns/__init__.py",
-        "tests/__init__.py",
-        "tests/conftest.py"
+        "learning-resources/examples/implementations/__init__.py",
+        "learning-resources/examples/implementations/patterns/__init__.py",
+        "learning-resources/examples/tests/__init__.py",
+        "learning-resources/examples/tests/conftest.py",
+        "QUICK_START.md"
     ]
     
     for file_path in expected_files:

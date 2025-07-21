@@ -1,10 +1,10 @@
-# CLAUDE.md
+# AI Architecture Advisor - Claude Code Guidelines
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with the AI Architecture Advisor.
 
 ## Project Overview
 
-This is a **Design Patterns Tutorial** repository teaching 10 essential design patterns through interactive Jupyter notebooks with production-ready Python implementations.
+This is an **AI-powered architecture recommendation system** that analyzes code and provides expert guidance on design patterns and architectural decisions. It features intelligent dp:: commands powered by sequential thinking AI, with comprehensive learning resources as supporting material.
 
 ## Common Development Commands
 
@@ -34,14 +34,14 @@ bandit -r src                      # Security checks
 radon cc src -a                    # Complexity analysis
 ```
 
-### Running Notebooks
+### Running Learning Resources
 ```bash
 # Docker (recommended)
 docker compose up --build
 # Access at: http://localhost:8888/tree?token=design-patterns-2025
 
 # Local
-jupyter lab notebooks/
+jupyter lab learning-resources/notebooks/
 ```
 
 ### Testing Notebooks

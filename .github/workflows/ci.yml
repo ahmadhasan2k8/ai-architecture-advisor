@@ -35,23 +35,23 @@ jobs:
     - name: Run linting
       run: |
         # Stop the build if there are Python syntax errors or undefined names
-        flake8 src tests --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 learning-resources/examples/implementations learning-resources/examples/tests ai-engine --count --select=E9,F63,F7,F82 --show-source --statistics
         # Exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 src tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        flake8 learning-resources/examples/implementations learning-resources/examples/tests ai-engine --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
     
     - name: Run type checking
       run: |
         # Run mypy with tutorial-friendly settings
-        mypy src --config-file mypy.ini || echo "Type checking completed with warnings (allowed for tutorial code)"
+        mypy learning-resources/examples/implementations ai-engine --config-file mypy.ini || echo "Type checking completed with warnings (allowed for tutorial code)"
     
     - name: Check code formatting
-      run: black --check --diff src tests
+      run: black --check --diff learning-resources/examples/implementations learning-resources/examples/tests ai-engine
     
     - name: Check import sorting
-      run: isort --check-only --diff src tests
+      run: isort --check-only --diff learning-resources/examples/implementations learning-resources/examples/tests ai-engine
     
     - name: Run security checks
-      run: bandit -r src -f json || true
+      run: bandit -r learning-resources/examples/implementations ai-engine -f json || true
 
   # Simplified test job - just run our simple test runner
   test:
@@ -78,8 +78,8 @@ jobs:
       run: |
         python -c "
         import sys
-        sys.path.insert(0, 'src')
-        from patterns.singleton import singleton
+        sys.path.insert(0, 'learning-resources/examples/implementations')
+        from patterns.singleton import Singleton
         from patterns.factory import ShapeFactory
         from patterns.observer import WeatherStation
         from patterns.repository import User, SqliteUserRepository
@@ -122,12 +122,12 @@ jobs:
     
     - name: Build Docker image
       run: |
-        docker build -t design-patterns-tutorial:latest .
+        docker build -t ai-architecture-advisor:latest .
     
     - name: Test Docker image
       run: |
         # Test that the Docker image can run basic imports
-        docker run --rm -v ${{ github.workspace }}/.github/scripts:/scripts design-patterns-tutorial:latest python /scripts/test_docker.py
+        docker run --rm -v ${{ github.workspace }}/.github/scripts:/scripts ai-architecture-advisor:latest python /scripts/test_docker.py
     
     - name: Test Docker Compose
       run: |

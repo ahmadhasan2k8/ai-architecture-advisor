@@ -3,9 +3,9 @@ requires = ["setuptools>=65", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "design-patterns-tutorial"
+name = "ai-architecture-advisor"
 version = "1.0.0"
-description = "A comprehensive tutorial on design patterns with interactive Jupyter notebooks"
+description = "AI-powered architecture advisor that provides expert recommendations on design patterns and architectural decisions"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
@@ -50,9 +50,9 @@ dev = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/yourusername/design-patterns-tutorial"
-"Bug Reports" = "https://github.com/yourusername/design-patterns-tutorial/issues"
-"Source" = "https://github.com/yourusername/design-patterns-tutorial"
+"Homepage" = "https://github.com/ahmadhasan2k8/ai-architecture-advisor"
+"Bug Reports" = "https://github.com/ahmadhasan2k8/ai-architecture-advisor/issues"
+"Source" = "https://github.com/ahmadhasan2k8/ai-architecture-advisor"
 
 [tool.black]
 line-length = 88

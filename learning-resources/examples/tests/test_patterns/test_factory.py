@@ -5,7 +5,7 @@ from typing import Type
 
 import pytest
 
-from src.patterns.factory import (  # Basic Factory Pattern; Notification Factory; Shape Factory; Abstract Factory
+from implementations.patterns.factory import (  # Basic Factory Pattern; Notification Factory; Shape Factory; Abstract Factory
     AbstractFactory,
     Button,
     Checkbox,
