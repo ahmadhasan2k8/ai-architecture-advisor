@@ -5,14 +5,15 @@ This module provides before/after examples and transformation templates
 for implementing design patterns based on the repository's examples.
 """
 
-from typing import Dict, List, Optional
 from dataclasses import dataclass
 from textwrap import dedent
+from typing import Dict, List, Optional
 
 
 @dataclass
 class RefactoringTemplate:
     """Template for refactoring code to implement a design pattern"""
+
     pattern_name: str
     scenario: str
     before_code: str
@@ -25,12 +26,12 @@ class RefactoringTemplate:
 
 # Refactoring templates based on repository examples
 REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
-    
     "strategy": [
         RefactoringTemplate(
             pattern_name="strategy",
             scenario="Replace if/elif chain with Strategy pattern",
-            before_code=dedent("""
+            before_code=dedent(
+                """
                 def process_payment(payment_type: str, amount: float) -> str:
                     if payment_type == "credit_card":
                         # 15 lines of credit card processing
@@ -46,8 +47,10 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                         return f"Crypto payment of ${amount + fee} processed"
                     else:
                         raise ValueError(f"Unknown payment type: {payment_type}")
-            """).strip(),
-            after_code=dedent("""
+            """
+            ).strip(),
+            after_code=dedent(
+                """
                 from abc import ABC, abstractmethod
                 
                 class PaymentProcessor(ABC):
@@ -83,28 +86,29 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                         if not processor:
                             raise ValueError(f"Unknown payment type: {payment_type}")
                         return processor.process(amount)
-            """).strip(),
+            """
+            ).strip(),
             explanation="Replace conditional logic with Strategy pattern when you have 3+ algorithms for the same problem",
             steps=[
                 "1. Create abstract base class (PaymentProcessor) defining the interface",
                 "2. Extract each conditional branch into a separate strategy class",
                 "3. Create context class (PaymentService) to manage strategies",
                 "4. Replace original function with strategy delegation",
-                "5. Add new payment types by creating new strategy classes"
+                "5. Add new payment types by creating new strategy classes",
             ],
             considerations=[
                 "Use when you have 3+ algorithms that are likely to change or expand",
                 "Each strategy should be independently testable",
                 "Consider strategy selection mechanism (registry, factory, etc.)",
-                "Strategies should be stateless for thread safety"
+                "Strategies should be stateless for thread safety",
             ],
-            testing_notes="Test each strategy independently, then test strategy selection in context class"
+            testing_notes="Test each strategy independently, then test strategy selection in context class",
         ),
-        
         RefactoringTemplate(
             pattern_name="strategy",
             scenario="Dynamic algorithm selection based on data characteristics",
-            before_code=dedent("""
+            before_code=dedent(
+                """
                 def sort_data(data: List[int]) -> List[int]:
                     if len(data) < 100:
                         # Use insertion sort for small arrays
@@ -115,8 +119,10 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                     else:
                         # Use merge sort for large arrays
                         return merge_sort(data.copy())
-            """).strip(),
-            after_code=dedent("""
+            """
+            ).strip(),
+            after_code=dedent(
+                """
                 from abc import ABC, abstractmethod
                 from typing import List
                 
@@ -156,30 +162,31 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                             return 'medium'
                         else:
                             return 'large'
-            """).strip(),
+            """
+            ).strip(),
             explanation="Use Strategy pattern for intelligent algorithm selection based on input characteristics",
             steps=[
                 "1. Define strategy interface for the algorithm family",
                 "2. Implement each algorithm as a separate strategy",
                 "3. Create smart selector that chooses strategy based on input",
                 "4. Make strategy selection logic configurable if needed",
-                "5. Add performance monitoring to validate strategy choices"
+                "5. Add performance monitoring to validate strategy choices",
             ],
             considerations=[
                 "Strategy selection logic should be well-tested",
                 "Consider caching strategy instances for performance",
                 "Document the criteria for strategy selection",
-                "Allow for strategy selection override when needed"
+                "Allow for strategy selection override when needed",
             ],
-            testing_notes="Test strategy selection logic with various input sizes, benchmark performance"
-        )
+            testing_notes="Test strategy selection logic with various input sizes, benchmark performance",
+        ),
     ],
-    
     "factory": [
         RefactoringTemplate(
             pattern_name="factory",
             scenario="Replace type-based object creation with Factory pattern",
-            before_code=dedent("""
+            before_code=dedent(
+                """
                 def create_notification(notification_type: str, message: str):
                     if notification_type == "email":
                         return EmailNotification(message)
@@ -195,8 +202,10 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                 # Usage scattered throughout codebase
                 email_notif = create_notification("email", "Hello!")
                 sms_notif = create_notification("sms", "Alert!")
-            """).strip(),
-            after_code=dedent("""
+            """
+            ).strip(),
+            after_code=dedent(
+                """
                 from abc import ABC, abstractmethod
                 
                 class Notification(ABC):
@@ -231,30 +240,31 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                 # Usage
                 email_notif = NotificationFactory.create("email", recipient="user@example.com")
                 sms_notif = NotificationFactory.create("sms", phone_number="+1234567890")
-            """).strip(),
+            """
+            ).strip(),
             explanation="Use Factory pattern when you need to create families of related objects",
             steps=[
                 "1. Define common interface for all products (Notification)",
                 "2. Create factory class with creation methods",
                 "3. Register all product types in the factory",
                 "4. Add extensibility mechanism for new types",
-                "5. Replace direct instantiation with factory calls"
+                "5. Replace direct instantiation with factory calls",
             ],
             considerations=[
                 "Factory is useful when you have 3+ related classes",
                 "Consider Abstract Factory for families of related products",
                 "Make factory extensible for new product types",
-                "Factory can handle complex construction logic"
+                "Factory can handle complex construction logic",
             ],
-            testing_notes="Test factory with all registered types, test error handling for unknown types"
+            testing_notes="Test factory with all registered types, test error handling for unknown types",
         )
     ],
-    
     "observer": [
         RefactoringTemplate(
             pattern_name="observer",
             scenario="Replace manual notification loops with Observer pattern",
-            before_code=dedent("""
+            before_code=dedent(
+                """
                 class UserService:
                     def __init__(self):
                         self.email_service = EmailService()
@@ -270,8 +280,10 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                         self.audit_service.log_profile_update(user)
                         self.analytics_service.track_profile_update(user)
                         # If we add more services, we need to update this function
-            """).strip(),
-            after_code=dedent("""
+            """
+            ).strip(),
+            after_code=dedent(
+                """
                 from abc import ABC, abstractmethod
                 from typing import List, Any
                 
@@ -318,30 +330,31 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                 user_service.attach(EmailObserver(email_service))
                 user_service.attach(AuditObserver(audit_service))
                 user_service.attach(AnalyticsObserver(analytics_service))
-            """).strip(),
+            """
+            ).strip(),
             explanation="Use Observer pattern when multiple objects need to be notified of changes",
             steps=[
                 "1. Create Observer interface with update method",
                 "2. Create Subject base class with attach/detach/notify methods",
                 "3. Convert notification source to inherit from Subject",
                 "4. Convert each notification target to implement Observer",
-                "5. Replace manual notifications with notify calls"
+                "5. Replace manual notifications with notify calls",
             ],
             considerations=[
                 "Use when you have one-to-many relationships",
                 "Observers should handle their own errors",
                 "Consider async notifications for performance",
-                "Implement proper cleanup to prevent memory leaks"
+                "Implement proper cleanup to prevent memory leaks",
             ],
-            testing_notes="Test observer registration/removal, test notification with multiple observers"
+            testing_notes="Test observer registration/removal, test notification with multiple observers",
         )
     ],
-    
     "singleton": [
         RefactoringTemplate(
             pattern_name="singleton",
             scenario="Convert global configuration to thread-safe Singleton",
-            before_code=dedent("""
+            before_code=dedent(
+                """
                 # Global variables - not thread-safe, hard to test
                 DATABASE_HOST = "localhost"
                 DATABASE_PORT = 5432
@@ -358,8 +371,10 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                 def set_debug_mode(enabled: bool):
                     global DEBUG_MODE
                     DEBUG_MODE = enabled
-            """).strip(),
-            after_code=dedent("""
+            """
+            ).strip(),
+            after_code=dedent(
+                """
                 import threading
                 from typing import Dict, Any
                 
@@ -405,30 +420,31 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                 config = ConfigManager()
                 db_config = config.get_database_config()
                 config.set("debug_mode", True)
-            """).strip(),
+            """
+            ).strip(),
             explanation="Use Singleton for configuration that needs global access and thread safety",
             steps=[
                 "1. Create class with private _instance variable",
                 "2. Implement thread-safe __new__ with double-check locking",
                 "3. Add initialization guard in __init__",
                 "4. Protect shared data with additional locks if needed",
-                "5. Replace global variables with singleton methods"
+                "5. Replace global variables with singleton methods",
             ],
             considerations=[
                 "Only use for truly global resources (config, logging, connections)",
                 "Ensure thread safety with proper locking",
                 "Consider dependency injection for better testing",
-                "Document singleton lifecycle and usage"
+                "Document singleton lifecycle and usage",
             ],
-            testing_notes="Test thread safety, test singleton property, consider reset mechanism for tests"
+            testing_notes="Test thread safety, test singleton property, consider reset mechanism for tests",
         )
     ],
-    
     "builder": [
         RefactoringTemplate(
             pattern_name="builder",
             scenario="Replace complex constructor with Builder pattern",
-            before_code=dedent("""
+            before_code=dedent(
+                """
                 class DatabaseConnection:
                     def __init__(self, host: str, port: int, database: str, 
                                 username: str, password: str, ssl_enabled: bool = False,
@@ -453,8 +469,10 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                 # Usage - hard to read and error-prone
                 db = DatabaseConnection("localhost", 5432, "mydb", "user", "pass", 
                                       True, 45, 90, 5, 20, "utf8mb4", False)
-            """).strip(),
-            after_code=dedent("""
+            """
+            ).strip(),
+            after_code=dedent(
+                """
                 class DatabaseConnection:
                     def __init__(self, host: str, port: int, database: str, 
                                 username: str, password: str):
@@ -538,30 +556,31 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                       .with_timeouts(connection=45, read=90)
                       .with_pool(20)
                       .build())
-            """).strip(),
+            """
+            ).strip(),
             explanation="Use Builder pattern for objects with many optional parameters (5+)",
             steps=[
                 "1. Identify required vs optional parameters",
                 "2. Create builder class with fluent interface methods",
                 "3. Add validation in build() method",
                 "4. Make builder methods return self for chaining",
-                "5. Replace complex constructors with builder usage"
+                "5. Replace complex constructors with builder usage",
             ],
             considerations=[
                 "Use for constructors with 5+ parameters or complex validation",
                 "Builder provides better readability than long parameter lists",
                 "Consider immutable objects with builders",
-                "Add validation at appropriate construction steps"
+                "Add validation at appropriate construction steps",
             ],
-            testing_notes="Test required parameter validation, test various optional parameter combinations"
+            testing_notes="Test required parameter validation, test various optional parameter combinations",
         )
     ],
-    
     "command": [
         RefactoringTemplate(
             pattern_name="command",
             scenario="Add undo/redo functionality using Command pattern",
-            before_code=dedent("""
+            before_code=dedent(
+                """
                 class TextEditor:
                     def __init__(self):
                         self.content = ""
@@ -577,8 +596,10 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                         self.insert_text(position, text)
                     
                     # No undo/redo functionality - operations are irreversible
-            """).strip(),
-            after_code=dedent("""
+            """
+            ).strip(),
+            after_code=dedent(
+                """
                 from abc import ABC, abstractmethod
                 from typing import List
                 
@@ -661,40 +682,43 @@ REFACTORING_TEMPLATES: Dict[str, List[RefactoringTemplate]] = {
                 editor.execute_command(InsertTextCommand(editor, 6, "World!"))
                 editor.undo()  # Removes "World!"
                 editor.redo()  # Adds "World!" back
-            """).strip(),
+            """
+            ).strip(),
             explanation="Use Command pattern when you need undo/redo or operation queuing",
             steps=[
                 "1. Create Command interface with execute() and undo() methods",
                 "2. Create command classes for each operation type",
                 "3. Add command history management to main class",
                 "4. Implement undo/redo logic with position tracking",
-                "5. Replace direct operations with command execution"
+                "5. Replace direct operations with command execution",
             ],
             considerations=[
                 "Use when undo/redo, macro recording, or queuing is needed",
                 "Commands should store enough state for reversal",
                 "Consider memory usage for large command histories",
-                "Commands can be serialized for persistence"
+                "Commands can be serialized for persistence",
             ],
-            testing_notes="Test execute/undo for each command type, test redo after undo, test history management"
+            testing_notes="Test execute/undo for each command type, test redo after undo, test history management",
         )
-    ]
+    ],
 }
 
 
-def get_refactoring_template(pattern_name: str, scenario: Optional[str] = None) -> Optional[RefactoringTemplate]:
+def get_refactoring_template(
+    pattern_name: str, scenario: Optional[str] = None
+) -> Optional[RefactoringTemplate]:
     """Get a refactoring template for a specific pattern and scenario"""
     templates = REFACTORING_TEMPLATES.get(pattern_name.lower(), [])
-    
+
     if not templates:
         return None
-    
+
     if scenario:
         # Find template matching scenario
         for template in templates:
             if scenario.lower() in template.scenario.lower():
                 return template
-    
+
     # Return first template if no specific scenario or no match
     return templates[0]
 
@@ -712,39 +736,39 @@ def list_available_patterns() -> List[str]:
 def generate_refactoring_guide(pattern_name: str) -> str:
     """Generate a comprehensive refactoring guide for a pattern"""
     templates = get_all_templates_for_pattern(pattern_name)
-    
+
     if not templates:
         return f"No refactoring templates available for {pattern_name} pattern."
-    
+
     guide = f"# {pattern_name.title()} Pattern Refactoring Guide\n\n"
-    
+
     for i, template in enumerate(templates, 1):
         guide += f"## Scenario {i}: {template.scenario}\n\n"
         guide += f"**When to Apply**: {template.explanation}\n\n"
-        
+
         guide += "### Before (Anti-Pattern/Problematic Code)\n"
         guide += "```python\n"
         guide += template.before_code
         guide += "\n```\n\n"
-        
+
         guide += "### After (Pattern Implementation)\n"
         guide += "```python\n"
         guide += template.after_code
         guide += "\n```\n\n"
-        
+
         guide += "### Refactoring Steps\n"
         for step in template.steps:
             guide += f"- {step}\n"
         guide += "\n"
-        
+
         guide += "### Important Considerations\n"
         for consideration in template.considerations:
             guide += f"- {consideration}\n"
         guide += "\n"
-        
+
         guide += f"### Testing Strategy\n"
         guide += f"{template.testing_notes}\n\n"
-        
+
         guide += "---\n\n"
-    
+
     return guide

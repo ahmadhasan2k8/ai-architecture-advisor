@@ -6,12 +6,13 @@ tutorial notebooks to power intelligent pattern recommendations.
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
 from enum import Enum
+from typing import Dict, List, Optional, Tuple
 
 
 class ComplexityLevel(Enum):
     """Complexity levels for pattern usage scenarios"""
+
     SIMPLE = "simple"
     MODERATE = "moderate"
     COMPLEX = "complex"
@@ -20,15 +21,17 @@ class ComplexityLevel(Enum):
 
 class PatternConfidence(Enum):
     """Confidence levels for pattern recommendations"""
-    LOW = "low"          # 0-40% - Pattern might help but alternatives exist
-    MEDIUM = "medium"    # 40-70% - Pattern is a good fit
-    HIGH = "high"        # 70-90% - Pattern strongly recommended
-    CRITICAL = "critical" # 90%+ - Pattern is essential for this scenario
+
+    LOW = "low"  # 0-40% - Pattern might help but alternatives exist
+    MEDIUM = "medium"  # 40-70% - Pattern is a good fit
+    HIGH = "high"  # 70-90% - Pattern strongly recommended
+    CRITICAL = "critical"  # 90%+ - Pattern is essential for this scenario
 
 
 @dataclass
 class PatternCriteria:
     """Criteria for when to use a pattern"""
+
     minimum_complexity: ComplexityLevel
     indicators: List[str]  # Phrases/scenarios that suggest this pattern
     thresholds: Dict[str, int]  # Numeric thresholds (e.g., "algorithms": 3)
@@ -39,6 +42,7 @@ class PatternCriteria:
 @dataclass
 class AntiPatternCriteria:
     """Criteria for when NOT to use a pattern"""
+
     red_flags: List[str]  # Phrases that indicate pattern misuse
     scenarios_to_avoid: List[str]
     better_alternatives: List[str]
@@ -48,6 +52,7 @@ class AntiPatternCriteria:
 @dataclass
 class AdvancedScenarios:
     """Advanced scenarios and optimizations for patterns"""
+
     threading_considerations: Optional[str]
     performance_implications: Optional[str]
     testing_challenges: Optional[str]
@@ -58,6 +63,7 @@ class AdvancedScenarios:
 @dataclass
 class PatternKnowledge:
     """Complete knowledge about a design pattern"""
+
     name: str
     category: str  # creational, structural, behavioral
     description: str
@@ -71,7 +77,6 @@ class PatternKnowledge:
 
 # Knowledge Base - Structured data from extracted notebook analysis
 PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
-    
     "singleton": PatternKnowledge(
         name="Singleton Pattern",
         category="creational",
@@ -79,51 +84,61 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
         when_to_use=PatternCriteria(
             minimum_complexity=ComplexityLevel.MODERATE,
             indicators=[
-                "single instance", "only one", "global access", "shared state",
-                "database connection", "configuration", "logging", "cache"
+                "single instance",
+                "only one",
+                "global access",
+                "shared state",
+                "database connection",
+                "configuration",
+                "logging",
+                "cache",
             ],
             thresholds={
                 "expensive_creation": 1,  # If object creation is expensive
-                "global_access_points": 2  # If accessed from 2+ places
+                "global_access_points": 2,  # If accessed from 2+ places
             },
             use_cases=[
                 "Database connections - expensive to create, should be shared",
                 "Configuration settings - one source of truth needed",
-                "Logging systems - centralized logging required", 
-                "Caching mechanisms - shared cache across application"
+                "Logging systems - centralized logging required",
+                "Caching mechanisms - shared cache across application",
             ],
             benefits=[
                 "Controlled access to sole instance",
                 "Reduced memory footprint",
                 "Global access point",
-                "Lazy initialization"
-            ]
+                "Lazy initialization",
+            ],
         ),
         when_not_to_use=AntiPatternCriteria(
             red_flags=[
-                "just want global variables", "testing is important", 
-                "multiple instances later", "simple objects", "data models",
-                "user objects", "entity classes"
+                "just want global variables",
+                "testing is important",
+                "multiple instances later",
+                "simple objects",
+                "data models",
+                "user objects",
+                "entity classes",
             ],
             scenarios_to_avoid=[
                 "You just want global variables - Use modules instead",
                 "Testing is important - Singletons are hard to test and mock",
                 "You might need multiple instances later - Don't paint yourself into a corner",
                 "Simple objects - Don't over-engineer basic data structures",
-                "Data models - User, Product, Order should NOT be singletons"
+                "Data models - User, Product, Order should NOT be singletons",
             ],
             better_alternatives=[
                 "Module-level variables for simple global state",
                 "Dependency injection for better testability",
                 "Configuration objects passed as parameters",
-                "Context managers for resource control"
+                "Context managers for resource control",
             ],
             common_mistakes=[
                 "Not handling thread safety in concurrent environments",
                 "Using for data objects (User, Product entities)",
                 "Overuse - creating singletons when regular classes suffice",
-                "Making everything singleton for 'consistency'"
-            ]
+                "Making everything singleton for 'consistency'",
+            ],
         ),
         advanced=AdvancedScenarios(
             threading_considerations="""
@@ -152,67 +167,73 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
             - Document singleton lifecycle clearly
             - Consider configuration-driven creation
             - Plan for distributed systems (singletons don't scale across processes)
-            """
+            """,
         ),
         alternatives=[
             "Module-level variables",
             "Dependency injection",
             "Monostate pattern",
-            "Registry pattern"
+            "Registry pattern",
         ],
         complexity_score=6,
-        learning_difficulty=4
+        learning_difficulty=4,
     ),
-
     "factory": PatternKnowledge(
         name="Factory Pattern",
-        category="creational", 
+        category="creational",
         description="Creates objects without specifying their exact classes",
         when_to_use=PatternCriteria(
             minimum_complexity=ComplexityLevel.MODERATE,
             indicators=[
-                "create different types", "multiple classes", "configuration-driven",
-                "switch implementations", "object creation", "similar classes"
+                "create different types",
+                "multiple classes",
+                "configuration-driven",
+                "switch implementations",
+                "object creation",
+                "similar classes",
             ],
             thresholds={
                 "similar_classes": 3,  # 3+ similar classes doing same job
-                "creation_complexity": 5  # If creation logic > 5 lines
+                "creation_complexity": 5,  # If creation logic > 5 lines
             },
             use_cases=[
                 "3+ similar classes that do the same job differently",
                 "Complex object creation requiring multiple steps or decisions",
                 "Configuration-driven creation - object type depends on config",
-                "Need to switch implementations at runtime"
+                "Need to switch implementations at runtime",
             ],
             benefits=[
                 "Decouples object creation from usage",
                 "Easy to add new types without changing client code",
                 "Centralizes creation logic",
-                "Supports polymorphism"
-            ]
+                "Supports polymorphism",
+            ],
         ),
         when_not_to_use=AntiPatternCriteria(
             red_flags=[
-                "only one class", "simple object creation", "over-engineering",
-                "performance critical", "just in case"
+                "only one class",
+                "simple object creation",
+                "over-engineering",
+                "performance critical",
+                "just in case",
             ],
             scenarios_to_avoid=[
                 "Only one class - Don't create factory for just one type",
                 "Simple object creation - If MyClass() is simple enough",
                 "Over-engineering - Don't add factories 'just in case'",
-                "Performance critical sections - Factories add small overhead"
+                "Performance critical sections - Factories add small overhead",
             ],
             better_alternatives=[
                 "Function parameters for small variations",
-                "Enums with switch statements for fixed options", 
+                "Enums with switch statements for fixed options",
                 "Configuration files for simple behavior changes",
-                "Direct instantiation for simple cases"
+                "Direct instantiation for simple cases",
             ],
             common_mistakes=[
                 "Creating factory for single class",
                 "Adding factory complexity before it's needed",
-                "Not using polymorphism effectively"
-            ]
+                "Not using polymorphism effectively",
+            ],
         ),
         advanced=AdvancedScenarios(
             threading_considerations="""
@@ -239,18 +260,17 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
             - Document which factory to use for each scenario
             - Consider plugin architecture with factory registration
             - Plan for dependency injection integration
-            """
+            """,
         ),
         alternatives=[
             "Direct instantiation",
             "Builder pattern for complex construction",
             "Prototype pattern for cloning",
-            "Service locator pattern"
+            "Service locator pattern",
         ],
         complexity_score=5,
-        learning_difficulty=3
+        learning_difficulty=3,
     ),
-
     "observer": PatternKnowledge(
         name="Observer Pattern",
         category="behavioral",
@@ -258,50 +278,61 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
         when_to_use=PatternCriteria(
             minimum_complexity=ComplexityLevel.MODERATE,
             indicators=[
-                "subscribe", "notify", "listen", "event", "update", "broadcast",
-                "model-view", "real-time", "multiple listeners", "one-to-many"
+                "subscribe",
+                "notify",
+                "listen",
+                "event",
+                "update",
+                "broadcast",
+                "model-view",
+                "real-time",
+                "multiple listeners",
+                "one-to-many",
             ],
             thresholds={
                 "observers": 2,  # 2+ objects need to be notified
                 "event_types": 1,  # Any event-driven scenario
-                "update_frequency": 1  # Regular updates needed
+                "update_frequency": 1,  # Regular updates needed
             },
             use_cases=[
                 "Model-View architectures - views update when model changes",
                 "Event-driven systems - user actions, system events",
                 "Real-time updates - stock prices, chat, live dashboards",
-                "One-to-many relationships - one subject, many observers"
+                "One-to-many relationships - one subject, many observers",
             ],
             benefits=[
                 "Loose coupling between subject and observers",
                 "Dynamic relationships - add/remove observers at runtime",
                 "Broadcast communication",
-                "Supports event-driven architectures"
-            ]
+                "Supports event-driven architectures",
+            ],
         ),
         when_not_to_use=AntiPatternCriteria(
             red_flags=[
-                "simple data binding", "performance critical", "complex update sequences",
-                "only one observer", "order dependencies"
+                "simple data binding",
+                "performance critical",
+                "complex update sequences",
+                "only one observer",
+                "order dependencies",
             ],
             scenarios_to_avoid=[
                 "Simple data binding - direct references might be simpler",
                 "Performance critical code - observer pattern adds notification overhead",
                 "Complex update sequences - order dependencies make it confusing",
-                "Only one observer - direct method calls are clearer"
+                "Only one observer - direct method calls are clearer",
             ],
             better_alternatives=[
                 "Direct method calls for single observer",
                 "Callback functions for simple notifications",
                 "Event queues for decoupled async communication",
-                "Property setters for simple data binding"
+                "Property setters for simple data binding",
             ],
             common_mistakes=[
                 "Forgetting to unsubscribe - leads to memory leaks",
                 "Circular dependencies - Observer A updates Observer B which updates A",
                 "Complex update chains - hard to debug event propagation",
-                "Not considering notification order"
-            ]
+                "Not considering notification order",
+            ],
         ),
         advanced=AdvancedScenarios(
             threading_considerations="""
@@ -333,68 +364,74 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
             - Consider event sourcing for audit trails
             - Plan for distributed observers (message queues)
             - Implement proper error handling in notifications
-            """
+            """,
         ),
         alternatives=[
             "Callback functions",
             "Event queues/message brokers",
             "Reactive programming (RxPY)",
-            "Signals/slots mechanism"
+            "Signals/slots mechanism",
         ],
         complexity_score=6,
-        learning_difficulty=5
+        learning_difficulty=5,
     ),
-
     "strategy": PatternKnowledge(
-        name="Strategy Pattern", 
+        name="Strategy Pattern",
         category="behavioral",
         description="Defines family of algorithms and makes them interchangeable",
         when_to_use=PatternCriteria(
             minimum_complexity=ComplexityLevel.MODERATE,
             indicators=[
-                "multiple algorithms", "different ways", "switch algorithm",
-                "runtime selection", "eliminate conditionals", "A/B testing"
+                "multiple algorithms",
+                "different ways",
+                "switch algorithm",
+                "runtime selection",
+                "eliminate conditionals",
+                "A/B testing",
             ],
             thresholds={
                 "algorithms": 3,  # 3+ algorithms for same problem
                 "conditional_lines": 10,  # Replace if/elif chains >10 lines
-                "algorithm_complexity": 5  # Each algorithm >5 lines
+                "algorithm_complexity": 5,  # Each algorithm >5 lines
             },
             use_cases=[
                 "3+ algorithms for the same problem (sorting, compression)",
-                "Runtime algorithm switching based on data or user preference", 
+                "Runtime algorithm switching based on data or user preference",
                 "Eliminating conditionals - replace long if/else chains",
-                "A/B testing - easily switch between implementations"
+                "A/B testing - easily switch between implementations",
             ],
             benefits=[
                 "Easy to add new algorithms",
                 "Runtime algorithm selection",
                 "Eliminates conditional statements",
-                "Each algorithm can be tested separately"
-            ]
+                "Each algorithm can be tested separately",
+            ],
         ),
         when_not_to_use=AntiPatternCriteria(
             red_flags=[
-                "only one algorithm", "simple variations", "algorithms rarely change",
-                "performance critical", "two simple cases"
+                "only one algorithm",
+                "simple variations",
+                "algorithms rarely change",
+                "performance critical",
+                "two simple cases",
             ],
             scenarios_to_avoid=[
                 "Only one algorithm - don't create strategies for single implementations",
                 "Simple variations - use parameters instead of separate strategies",
                 "Algorithms rarely change - if you'll never switch, don't add overhead",
-                "Performance critical - strategy pattern adds method call overhead"
+                "Performance critical - strategy pattern adds method call overhead",
             ],
             better_alternatives=[
                 "Function parameters for small variations",
                 "Configuration objects for behavior customization",
                 "Template methods for algorithms with similar structure",
-                "Simple if/else for 2-3 cases"
+                "Simple if/else for 2-3 cases",
             ],
             common_mistakes=[
                 "Creating strategy for single algorithm",
                 "Not making strategies truly interchangeable",
-                "Over-engineering simple conditional logic"
-            ]
+                "Over-engineering simple conditional logic",
+            ],
         ),
         advanced=AdvancedScenarios(
             threading_considerations="""
@@ -422,68 +459,76 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
             - Document strategy selection criteria
             - Consider configuration-driven strategy selection
             - Plan for strategy versioning and backwards compatibility
-            """
+            """,
         ),
         alternatives=[
             "Function pointers/higher-order functions",
             "Template method pattern",
             "State pattern for behavior changes",
-            "Command pattern for action selection"
+            "Command pattern for action selection",
         ],
         complexity_score=4,
-        learning_difficulty=3
+        learning_difficulty=3,
     ),
-
     "command": PatternKnowledge(
         name="Command Pattern",
-        category="behavioral", 
+        category="behavioral",
         description="Encapsulates requests as objects to parameterize and queue operations",
         when_to_use=PatternCriteria(
             minimum_complexity=ComplexityLevel.MODERATE,
             indicators=[
-                "undo", "redo", "queue", "macro", "log operations", "parameterize objects",
-                "decouple invoker", "store operations"
+                "undo",
+                "redo",
+                "queue",
+                "macro",
+                "log operations",
+                "parameterize objects",
+                "decouple invoker",
+                "store operations",
             ],
             thresholds={
                 "operations_to_track": 1,  # Any operation that needs undo/logging
                 "macro_commands": 2,  # 2+ commands to combine
-                "queue_size": 1  # Any queuing requirement
+                "queue_size": 1,  # Any queuing requirement
             },
             use_cases=[
                 "Undo/redo operations - commands store state for reversal",
                 "Macro recording - combine multiple commands",
-                "Queue operations - store commands for later execution", 
-                "Logging and auditing - track all operations performed"
+                "Queue operations - store commands for later execution",
+                "Logging and auditing - track all operations performed",
             ],
             benefits=[
                 "Decouples invoker from receiver",
                 "Commands can be stored and queued",
                 "Supports undo/redo functionality",
-                "Easy to create macro commands"
-            ]
+                "Easy to create macro commands",
+            ],
         ),
         when_not_to_use=AntiPatternCriteria(
             red_flags=[
-                "simple operations", "no undo needed", "performance critical",
-                "tight coupling acceptable", "basic getters"
+                "simple operations",
+                "no undo needed",
+                "performance critical",
+                "tight coupling acceptable",
+                "basic getters",
             ],
             scenarios_to_avoid=[
                 "Simple operations - don't create commands for basic method calls",
                 "No undo needed - if operations are irreversible and logging not needed",
                 "Performance critical - command objects add overhead",
-                "Tight coupling acceptable - when invoker can directly call receiver"
+                "Tight coupling acceptable - when invoker can directly call receiver",
             ],
             better_alternatives=[
                 "Direct method calls for simple operations",
                 "Function pointers for parameterization",
                 "Event systems for decoupling",
-                "Transaction objects for complex operations"
+                "Transaction objects for complex operations",
             ],
             common_mistakes=[
                 "Creating commands for every operation",
                 "Not implementing proper undo logic",
-                "Making commands too granular"
-            ]
+                "Making commands too granular",
+            ],
         ),
         advanced=AdvancedScenarios(
             threading_considerations="""
@@ -510,18 +555,17 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
             - Document command contracts and side effects
             - Consider command versioning for system evolution
             - Plan for command serialization and persistence
-            """
+            """,
         ),
         alternatives=[
             "Direct method calls",
             "Function objects/lambdas",
             "Event sourcing",
-            "Transaction scripts"
+            "Transaction scripts",
         ],
         complexity_score=6,
-        learning_difficulty=5
+        learning_difficulty=5,
     ),
-
     "builder": PatternKnowledge(
         name="Builder Pattern",
         category="creational",
@@ -529,49 +573,56 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
         when_to_use=PatternCriteria(
             minimum_complexity=ComplexityLevel.MODERATE,
             indicators=[
-                "complex construction", "many parameters", "optional parameters",
-                "step by step", "fluent interface", "validation during construction"
+                "complex construction",
+                "many parameters",
+                "optional parameters",
+                "step by step",
+                "fluent interface",
+                "validation during construction",
             ],
             thresholds={
                 "constructor_parameters": 5,  # 5+ constructor parameters
                 "optional_parameters": 3,  # 3+ optional parameters
-                "construction_steps": 3   # 3+ construction steps
+                "construction_steps": 3,  # 3+ construction steps
             },
             use_cases=[
                 "Objects with many optional parameters (5+ parameters)",
                 "Step-by-step construction with validation at each step",
                 "Immutable objects that need complex construction",
-                "Objects where construction order matters"
+                "Objects where construction order matters",
             ],
             benefits=[
                 "Readable object construction",
-                "Handles optional parameters elegantly", 
+                "Handles optional parameters elegantly",
                 "Validates during construction",
-                "Supports fluent interface"
-            ]
+                "Supports fluent interface",
+            ],
         ),
         when_not_to_use=AntiPatternCriteria(
             red_flags=[
-                "few properties", "simple construction", "no variation in process",
-                "performance critical", "immutable not needed"
+                "few properties",
+                "simple construction",
+                "no variation in process",
+                "performance critical",
+                "immutable not needed",
             ],
             scenarios_to_avoid=[
                 "Few properties - don't use builder for 2-3 simple parameters",
                 "Simple construction - regular constructor is clearer",
                 "No variation in process - builder adds unnecessary complexity",
-                "Performance critical - builder adds method call overhead"
+                "Performance critical - builder adds method call overhead",
             ],
             better_alternatives=[
                 "Regular constructors for simple objects",
                 "Dataclasses with defaults for data containers",
                 "Factory methods for complex creation logic",
-                "Keyword arguments for optional parameters"
+                "Keyword arguments for optional parameters",
             ],
             common_mistakes=[
                 "Using builder for simple objects",
                 "Not validating during construction",
-                "Making builder mutable when building immutable objects"
-            ]
+                "Making builder mutable when building immutable objects",
+            ],
         ),
         advanced=AdvancedScenarios(
             threading_considerations="""
@@ -598,18 +649,17 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
             - Document required vs optional construction steps
             - Consider builder inheritance for object families
             - Plan for configuration-driven object construction
-            """
+            """,
         ),
         alternatives=[
             "Dataclasses with defaults",
             "Factory methods",
             "Keyword arguments",
-            "Configuration objects"
+            "Configuration objects",
         ],
         complexity_score=5,
-        learning_difficulty=4
+        learning_difficulty=4,
     ),
-
     "adapter": PatternKnowledge(
         name="Adapter Pattern",
         category="structural",
@@ -617,48 +667,54 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
         when_to_use=PatternCriteria(
             minimum_complexity=ComplexityLevel.SIMPLE,
             indicators=[
-                "incompatible interfaces", "third-party integration", "legacy system",
-                "cannot modify", "interface mismatch", "wrapper needed"
+                "incompatible interfaces",
+                "third-party integration",
+                "legacy system",
+                "cannot modify",
+                "interface mismatch",
+                "wrapper needed",
             ],
             thresholds={
                 "interface_differences": 1,  # Any interface incompatibility
-                "modification_restrictions": 1  # Cannot modify existing code
+                "modification_restrictions": 1,  # Cannot modify existing code
             },
             use_cases=[
                 "Incompatible interfaces between existing classes",
                 "Third-party library integration with different interface",
                 "Legacy system integration without modifying old code",
-                "Making old interface work with new system"
+                "Making old interface work with new system",
             ],
             benefits=[
                 "Reuses existing code without modification",
                 "Separates interface concerns from business logic",
                 "Allows incompatible classes to work together",
-                "Follows open/closed principle"
-            ]
+                "Follows open/closed principle",
+            ],
         ),
         when_not_to_use=AntiPatternCriteria(
             red_flags=[
-                "interfaces already compatible", "can modify existing classes",
-                "too complex adaptation", "performance critical"
+                "interfaces already compatible",
+                "can modify existing classes",
+                "too complex adaptation",
+                "performance critical",
             ],
             scenarios_to_avoid=[
                 "Interfaces already compatible - no adapter needed",
                 "Can modify existing classes - direct modification is simpler",
                 "Too complex adaptation - consider redesigning interfaces",
-                "Performance critical - adapter adds indirection overhead"
+                "Performance critical - adapter adds indirection overhead",
             ],
             better_alternatives=[
                 "Direct interface modification if possible",
                 "Interface inheritance for compatible types",
                 "Composition for simple wrapping",
-                "Facade pattern for complex subsystem integration"
+                "Facade pattern for complex subsystem integration",
             ],
             common_mistakes=[
                 "Over-adapting simple interface differences",
                 "Not handling all methods of adapted interface",
-                "Making adapter do too much business logic"
-            ]
+                "Making adapter do too much business logic",
+            ],
         ),
         advanced=AdvancedScenarios(
             threading_considerations="""
@@ -685,18 +741,17 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
             - Document adaptation contracts and limitations
             - Consider adapter versioning for API evolution
             - Plan for multiple adapter implementations
-            """
+            """,
         ),
         alternatives=[
             "Direct interface modification",
             "Facade pattern",
             "Wrapper functions",
-            "Interface inheritance"
+            "Interface inheritance",
         ],
         complexity_score=3,
-        learning_difficulty=2
+        learning_difficulty=2,
     ),
-
     "decorator": PatternKnowledge(
         name="Decorator Pattern",
         category="structural",
@@ -704,49 +759,54 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
         when_to_use=PatternCriteria(
             minimum_complexity=ComplexityLevel.MODERATE,
             indicators=[
-                "add responsibilities", "multiple features", "transparent enhancement",
-                "composable behaviors", "avoid inheritance explosion"
+                "add responsibilities",
+                "multiple features",
+                "transparent enhancement",
+                "composable behaviors",
+                "avoid inheritance explosion",
             ],
             thresholds={
                 "optional_features": 3,  # 3+ optional features to add
                 "feature_combinations": 4,  # 4+ possible combinations
-                "inheritance_levels": 3   # Would need 3+ inheritance levels
+                "inheritance_levels": 3,  # Would need 3+ inheritance levels
             },
             use_cases=[
                 "Add responsibilities dynamically without inheritance",
-                "Multiple feature combinations - avoid class explosion", 
+                "Multiple feature combinations - avoid class explosion",
                 "Transparent enhancement - client doesn't know about decoration",
-                "Composable behaviors - stack multiple decorators"
+                "Composable behaviors - stack multiple decorators",
             ],
             benefits=[
                 "More flexible than inheritance",
                 "Adds responsibilities at runtime",
                 "Supports composition of behaviors",
-                "Follows single responsibility principle"
-            ]
+                "Follows single responsibility principle",
+            ],
         ),
         when_not_to_use=AntiPatternCriteria(
             red_flags=[
-                "component interface too complex", "fixed combinations", 
-                "performance critical", "simple objects"
+                "component interface too complex",
+                "fixed combinations",
+                "performance critical",
+                "simple objects",
             ],
             scenarios_to_avoid=[
                 "Component interface is too complex - decorators need to implement all methods",
                 "Fixed set of combinations - regular inheritance might be simpler",
                 "Performance critical - each decorator adds indirection layer",
-                "Simple objects - don't over-engineer basic data"
+                "Simple objects - don't over-engineer basic data",
             ],
             better_alternatives=[
                 "Inheritance for fixed combinations",
                 "Composition for simple wrapping",
                 "Mixins for multiple inheritance languages",
-                "Strategy pattern for algorithmic variations"
+                "Strategy pattern for algorithmic variations",
             ],
             common_mistakes=[
                 "Making decorators too complex",
                 "Not maintaining component interface properly",
-                "Using for simple feature additions"
-            ]
+                "Using for simple feature additions",
+            ],
         ),
         advanced=AdvancedScenarios(
             threading_considerations="""
@@ -773,18 +833,17 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
             - Document decorator composition rules
             - Consider decorator registration/discovery mechanisms
             - Plan for decorator configuration and ordering
-            """
+            """,
         ),
         alternatives=[
             "Inheritance hierarchies",
             "Composition",
             "Mixins",
-            "Aspect-oriented programming"
+            "Aspect-oriented programming",
         ],
         complexity_score=7,
-        learning_difficulty=6
+        learning_difficulty=6,
     ),
-
     "state": PatternKnowledge(
         name="State Pattern",
         category="behavioral",
@@ -792,49 +851,56 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
         when_to_use=PatternCriteria(
             minimum_complexity=ComplexityLevel.MODERATE,
             indicators=[
-                "behavior depends on state", "finite state machine", "state transitions",
-                "workflow", "different behavior", "state-dependent"
+                "behavior depends on state",
+                "finite state machine",
+                "state transitions",
+                "workflow",
+                "different behavior",
+                "state-dependent",
             ],
             thresholds={
                 "states": 3,  # 3+ distinct states
                 "state_transitions": 3,  # 3+ possible transitions
-                "behavior_differences": 5  # Significant behavior differences
+                "behavior_differences": 5,  # Significant behavior differences
             },
             use_cases=[
                 "Behavior depends on object state (game character abilities)",
                 "Complex conditionals based on state - replace if/else chains",
                 "Finite state machines - clear states and transitions",
-                "Workflow systems - document approval, order processing"
+                "Workflow systems - document approval, order processing",
             ],
             benefits=[
                 "Eliminates complex conditional statements",
                 "Makes state transitions explicit",
                 "Easy to add new states",
-                "Each state encapsulates its behavior"
-            ]
+                "Each state encapsulates its behavior",
+            ],
         ),
         when_not_to_use=AntiPatternCriteria(
             red_flags=[
-                "few states", "simple behavior", "rare state changes",
-                "simple logic", "performance critical"
+                "few states",
+                "simple behavior",
+                "rare state changes",
+                "simple logic",
+                "performance critical",
             ],
             scenarios_to_avoid=[
                 "Few states with simple behavior - enum + match might be simpler",
                 "Rare state changes - overhead not justified",
                 "Simple logic - don't over-engineer basic conditionals",
-                "Performance critical - state objects add overhead"
+                "Performance critical - state objects add overhead",
             ],
             better_alternatives=[
                 "Enum + match statements for simple states",
                 "Strategy pattern for algorithmic variations",
                 "Simple boolean flags for binary states",
-                "Command pattern for action-based behavior"
+                "Command pattern for action-based behavior",
             ],
             common_mistakes=[
                 "Using for simple boolean states",
                 "Not handling all state transitions properly",
-                "Making states too granular"
-            ]
+                "Making states too granular",
+            ],
         ),
         advanced=AdvancedScenarios(
             threading_considerations="""
@@ -861,68 +927,73 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
             - Document state machine diagrams
             - Consider state persistence and restoration
             - Plan for state machine configuration and validation
-            """
+            """,
         ),
         alternatives=[
             "Enum + match statements",
             "Strategy pattern",
             "Boolean flags",
-            "Finite state machine libraries"
+            "Finite state machine libraries",
         ],
         complexity_score=7,
-        learning_difficulty=6
+        learning_difficulty=6,
     ),
-
     "repository": PatternKnowledge(
         name="Repository Pattern",
-        category="behavioral", 
+        category="behavioral",
         description="Centralizes data access logic and provides uniform interface",
         when_to_use=PatternCriteria(
             minimum_complexity=ComplexityLevel.MODERATE,
             indicators=[
-                "data access", "multiple data sources", "testability", "domain logic",
-                "centralize queries", "abstract storage"
+                "data access",
+                "multiple data sources",
+                "testability",
+                "domain logic",
+                "centralize queries",
+                "abstract storage",
             ],
             thresholds={
                 "data_sources": 1,  # Any data access needs
                 "complex_queries": 3,  # 3+ different query types
-                "entities": 2  # 2+ entity types with data access
+                "entities": 2,  # 2+ entity types with data access
             },
             use_cases=[
                 "Centralizing data access logic across application",
                 "Supporting multiple data sources (database, file, API)",
                 "Improving testability by abstracting data layer",
-                "Domain-driven design - isolate domain from infrastructure"
+                "Domain-driven design - isolate domain from infrastructure",
             ],
             benefits=[
                 "Centralizes data access logic",
                 "Easy to switch data sources",
                 "Improves testability with mock repositories",
-                "Separates domain logic from data access"
-            ]
+                "Separates domain logic from data access",
+            ],
         ),
         when_not_to_use=AntiPatternCriteria(
             red_flags=[
-                "simple applications", "ORM already provides abstraction",
-                "unjustified overhead", "single data source"
+                "simple applications",
+                "ORM already provides abstraction",
+                "unjustified overhead",
+                "single data source",
             ],
             scenarios_to_avoid=[
                 "Simple applications - CRUD operations don't need repository layer",
                 "ORM already provides abstraction - don't add another layer",
                 "Unjustified overhead - repositories add complexity",
-                "Single data source with no switching plans"
+                "Single data source with no switching plans",
             ],
             better_alternatives=[
                 "Direct ORM usage for simple applications",
                 "Data Access Objects (DAO) for simple CRUD",
                 "Active Record pattern for simple models",
-                "Query builders for dynamic queries"
+                "Query builders for dynamic queries",
             ],
             common_mistakes=[
                 "Making repository too generic (generic repository anti-pattern)",
                 "Putting business logic in repository",
-                "Not using Unit of Work pattern with repositories"
-            ]
+                "Not using Unit of Work pattern with repositories",
+            ],
         ),
         advanced=AdvancedScenarios(
             threading_considerations="""
@@ -949,17 +1020,17 @@ PATTERN_KNOWLEDGE: Dict[str, PatternKnowledge] = {
             - Document repository contracts and capabilities
             - Consider repository composition for complex scenarios
             - Plan for distributed data sources and eventual consistency
-            """
+            """,
         ),
         alternatives=[
             "Direct ORM usage",
             "Data Access Objects (DAO)",
             "Active Record pattern",
-            "Query builders"
+            "Query builders",
         ],
         complexity_score=6,
-        learning_difficulty=5
-    )
+        learning_difficulty=5,
+    ),
 }
 
 
@@ -979,20 +1050,20 @@ def find_patterns_by_indicators(indicators: List[str]) -> List[Tuple[str, float]
     Returns list of (pattern_name, confidence_score) tuples
     """
     results = []
-    
+
     for pattern_name, knowledge in PATTERN_KNOWLEDGE.items():
         score = 0.0
         total_indicators = len(knowledge.when_to_use.indicators)
-        
+
         for indicator in indicators:
             indicator_lower = indicator.lower()
             for pattern_indicator in knowledge.when_to_use.indicators:
                 if indicator_lower in pattern_indicator.lower():
                     score += 1.0 / total_indicators
-                    
+
         if score > 0:
             results.append((pattern_name, min(score, 1.0)))
-    
+
     return sorted(results, key=lambda x: x[1], reverse=True)
 
 
@@ -1003,22 +1074,26 @@ def check_anti_patterns(description: str) -> List[Tuple[str, str]]:
     """
     warnings = []
     description_lower = description.lower()
-    
+
     for pattern_name, knowledge in PATTERN_KNOWLEDGE.items():
         for red_flag in knowledge.when_not_to_use.red_flags:
             if red_flag.lower() in description_lower:
-                warning = f"⚠️ Potential {pattern_name} anti-pattern detected: {red_flag}"
+                warning = (
+                    f"⚠️ Potential {pattern_name} anti-pattern detected: {red_flag}"
+                )
                 warnings.append((pattern_name, warning))
-                
+
     return warnings
 
 
-def get_complexity_recommendation(pattern_name: str, scenario_complexity: ComplexityLevel) -> str:
+def get_complexity_recommendation(
+    pattern_name: str, scenario_complexity: ComplexityLevel
+) -> str:
     """Get recommendation based on scenario complexity vs pattern requirements"""
     knowledge = get_pattern_by_name(pattern_name)
     if not knowledge:
         return "Pattern not found"
-        
+
     if scenario_complexity.value < knowledge.when_to_use.minimum_complexity.value:
         return f"⚠️ {knowledge.name} might be overkill for {scenario_complexity.value} scenarios"
     else:
